@@ -2,6 +2,8 @@ package repository;
 
 import entities.Customer;
 import model.Order;
+import model.User;
+import model.WorkOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +66,7 @@ public class Orders {
 
     public void showOrder(Order n) {
 
-        System.out.println("id " + n.getId());
+        System.out.println("\nOrder " + n.getId());
         if (n.getCustomer() != null)
             System.out.println("Customer: " + n.getCustomer().getName());
         else
@@ -75,8 +77,48 @@ public class Orders {
         else
             System.out.println("OperatorCC: null");
         System.out.println("TC operators: " + n.getOperatorsTC().size());
+        for (User u : n.getOperatorsTC())
+            System.out.println("    " + u.getId() + " " + u.getLogin());
         System.out.println("Addresses: " + n.getAddresses().size());
+        for (int i = 0; i < n.getAddresses().size(); i++) {
+            System.out.println("    " + n.getAddresses().get(i) + " -> " +
+                    "\"" + n.getTariffs().get(i).getName() + "\"" + " " +
+                    n.getTariffs().get(i).getPrice());
+        }
         System.out.println("Status: " + n.getStatus());
         System.out.println("PaymentStatus: " + n.getPaymentStatus());
+
+        System.out.println("Data TC:");
+        for (String s : n.getDataTC())
+            System.out.println("    " + "\"" + s + "\"");
+
+        if (n.getPaymentDocument() != null) {
+            System.out.println("Payment document:");
+            System.out.println("    Work cost:" + n.getPaymentDocument().getWorkCost());
+            System.out.println("    Device cost:" + n.getPaymentDocument().getDeviceCost());
+            System.out.println("    Total cost:" + n.getPaymentDocument().getTotalCost());
+        }
+
+        if (n.getWorkOrder() != null) {
+            System.out.println("Order WC " + n.getWorkOrder().getId());
+            showWorkOrder(n.getWorkOrder());
+        }
+
+        System.out.println();
+    }
+
+    private void showWorkOrder(WorkOrder n) {
+        System.out.println("    WC operators: " + n.getOperatorsWC().size());
+        for (User u : n.getOperatorsWC())
+            System.out.println("        " + u.getId() + " " + u.getLogin());
+
+        System.out.println("    Data WC:");
+        for (String s : n.getDataWC())
+            System.out.println("        " + "\"" + s + "\"");
+        if (n.getReportWC() != null) {
+            System.out.println("    Report WC:");
+            System.out.println("        " + n.getReportWC().getData());
+        }
+
     }
 }

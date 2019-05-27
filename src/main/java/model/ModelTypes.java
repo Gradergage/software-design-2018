@@ -10,8 +10,10 @@ public class ModelTypes {
     public static final int ORDER_STATUS_IDLE = 0;
     public static final int ORDER_STATUS_ACTIVE = 1;
     public static final int ORDER_STATUS_COMPLETED = 2;
+    public static final int ORDER_STATUS_WAITING = 3;
 
     public static final int ORDER_PAYMENT_STATUS_IDLE = 0;
     public static final int ORDER_PAYMENT_STATUS_CONFIRMED = 1;
     public static final int ORDER_PAYMENT_STATUS_REJECTED = 2;
+    public static final int ORDER_PAYMENT_STATUS_WAITING = 3;
 }

@@ -55,7 +55,7 @@ public class Users {
 
         User cus = new User();
         cus.setId(id++);
-        cus.setName("Куй Железо Не-отходя-от-кассы");
+        cus.setName("Конь Педальный Трехступенчатый");
         cus.setType(ModelTypes.TYPE_USER_CUSTOMER);
         cus.setLogin("cus");
         cus.setPassword("cus");

@@ -13,7 +13,7 @@ public class Customer extends RepoApi implements UserInterface {
     private User user;
 
     public Customer(User user) {
-        this.user=user;
+        this.user = user;
 
     }
 
@@ -36,7 +36,8 @@ public class Customer extends RepoApi implements UserInterface {
     }
 
     @Override
-    public void editOrder(long id) {
+    public void editOrder(long id, String data) {
+        throw new UnsupportedOperationException();
 
     }
 
@@ -45,18 +46,16 @@ public class Customer extends RepoApi implements UserInterface {
 
     }
 
-    public Order createNewOrder()
-    {
+    public Order createNewOrder() {
         Order order = new Order();
         order.setCustomer(user);
         order.setStatus(ModelTypes.ORDER_STATUS_IDLE);
         order.setPaymentStatus(ModelTypes.ORDER_PAYMENT_STATUS_IDLE);
-        orders.getOrders().add(order);
+        orders.addOrder(order);
         return order;
     }
 
-    public Order addOrderPosition(Order order, String address, Tariff tariff)
-    {
+    public Order addOrderPosition(Order order, String address, Tariff tariff) {
         List<Tariff> tariffs = order.getTariffs();
         tariffs.add(tariff);
 
@@ -66,33 +65,33 @@ public class Customer extends RepoApi implements UserInterface {
         return order;
     }
 
-    public Order closeOrder(Order order)
-    {
+    public Order closeOrder(Order order) {
         order.setStatus(ModelTypes.ORDER_STATUS_COMPLETED);
         return order;
     }
 
-    public Order payOrder(Order order)
-    {
-        if(order.getPaymentDocument()!=null)
-        {
-            System.out.println(String.format("Bill: \n" +
-                    "%10d - Work cost\n"+
-                    "%10d - Device cost\n"+
-                    "%10d - Total cost",
+    public Order payOrder(long id) {
+        Order order = orders.getOrderById(id);
+        if (order.getPaymentDocument() != null) {
+    /*        System.out.println(String.format("Bill: \n" +
+                            "%10d - Work cost\n" +
+                            "%10d - Device cost\n" +
+                            "%10d - Total cost",
                     order.getPaymentDocument().getWorkCost(),
                     order.getPaymentDocument().getDeviceCost(),
                     order.getPaymentDocument().getTotalCost()));
-
+*/
+            order.setStatus(ModelTypes.ORDER_STATUS_ACTIVE);
             order.setPaymentStatus(ModelTypes.ORDER_PAYMENT_STATUS_CONFIRMED);
         }
 
         return order;
     }
 
-    public Order rejectOrder(Order order)
-    {
+    public Order rejectOrder(long id) {
+        Order order = orders.getOrderById(id);
         order.setPaymentStatus(ModelTypes.ORDER_PAYMENT_STATUS_REJECTED);
+        order.setStatus(ModelTypes.ORDER_STATUS_WAITING);
         return order;
     }
 

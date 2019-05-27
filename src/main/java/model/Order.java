@@ -10,11 +10,11 @@ public class Order {
     private int paymentStatus;
     private User customer;
     private User operatorCC;
-    private List<User> operatorsTC=new ArrayList<>();
-    private List<String> addresses=new ArrayList<>();
-    private List<Tariff> tariffs=new ArrayList<>();
-    private List<String> dataTC=new ArrayList<>();
-    private List<Device> devices=new ArrayList<>();
+    private List<User> operatorsTC = new ArrayList<>();
+    private List<String> addresses = new ArrayList<>();
+    private List<Tariff> tariffs = new ArrayList<>();
+    private List<String> dataTC = new ArrayList<>();
+    private List<Device> devices = new ArrayList<>();
 
     private PaymentDocument paymentDocument;
     private WorkOrder workOrder;

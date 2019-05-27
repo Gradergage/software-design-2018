@@ -1,11 +1,13 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkOrder {
     private long id;
-    private int status;
-    private List<String> dataWC;
+    private int status = 0;
+    private List<String> dataWC = new ArrayList<>();
+    private List<User> operatorsWC = new ArrayList<>();
     private ReportWC reportWC;
 
     public long getId() {
@@ -38,5 +40,13 @@ public class WorkOrder {
 
     public void setReportWC(ReportWC reportWC) {
         this.reportWC = reportWC;
+    }
+
+    public List<User> getOperatorsWC() {
+        return operatorsWC;
+    }
+
+    public void setOperatorsWC(List<User> operatorsWC) {
+        this.operatorsWC = operatorsWC;
     }
 }
