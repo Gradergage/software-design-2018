@@ -1,0 +1,67 @@
+@startuml
+skinparam dpi 200
+actor Заказчик as A
+
+usecase uc3 as "Регистрация заявки на подключение"
+usecase uc4 as "Внесение адресов"
+usecase uc5 as "Оплата заявки"
+usecase uc6 as "Отказ от заявки"
+usecase uc7 as "Внесение тарифов"
+usecase uc8 as "Закрытие заявки"
+usecase uc9 as "Оплата через\n старницу банка"
+usecase uc10 as "Согласие на монтаж"
+A -up-> (uc3)
+A -right-> (uc5)
+A -right-> (uc6)
+A -down-> (uc8)
+A -left->(uc10)
+uc4 .down.> uc3 : include
+uc7 .> uc3 : include
+uc5 .> uc9 : extend
+uc6 .> uc8 : include
+uc5 .> uc8 : include
+uc3 .down.> uc10 : include
+uc5 .down.> uc6 : extend
+uc10 <.right. uc5 : include
+@enduml
+
+@startuml
+skinparam dpi 200
+actor "Оператор КЦ" as A
+usecase uc1 as "Регистрация заявки на подключение"
+usecase uc2 as "Регистрация заявки на монтажные работы"
+usecase uc3 as "Назначение операторов ТО"
+usecase uc4 as "Назначение операторов МО"
+usecase uc5 as "Закрытие заявки"
+A -up-> (uc1)
+A -down-> (uc2)
+A -left-> (uc5)
+uc1 .left.> uc2 : include
+uc3 .down.> uc1 : include
+uc4 .down.> uc2 : include
+uc5 <.up. uc2 : include
+@enduml
+
+@startuml
+skinparam dpi 200
+actor "Оператор ТО" as A
+usecase uc1 as "Внесение единиц\n оборудования и стоимости"
+usecase uc2 as "Редактирование заявки"
+usecase uc3 as "Завершение обработки"
+A -right-> (uc2)
+A -right-> (uc3)
+uc2 .> uc1 : extend
+uc1 .down.> uc3 : include
+@enduml
+
+@startuml
+skinparam dpi 200
+actor "Оператор МО" as A
+usecase uc1 as "Внесение отчетности по монтажу"
+usecase uc2 as "Редактирование заявки"
+usecase uc3 as "Завершение обработки"
+A -right-> (uc2)
+A -right-> (uc3)
+uc2 .> uc1 : extend
+uc1 .down.> uc3 : include
+@enduml

@@ -1,0 +1,130 @@
+@startuml
+'Пользователь'
+skinparam dpi 180
+actor Пользователь as A
+participant Система as B
+A -> B : Авторизация
+activate B
+A <-- B : Успешная авторизация/ошибка
+deactivate B
+@enduml
+
+@startuml
+'Заказчик'
+skinparam dpi 180
+
+actor Заказчик as A
+participant Система as B
+A -> B : Регистрация
+activate B
+A <-- B : Успешная регистрация/ошибка
+deactivate B
+
+newpage
+A -> B : Запрос регистрации новой заявки
+activate B
+A <-- B : Возврат формы заявки
+deactivate B
+activate A
+A -> B : Внесение данных в форму
+deactivate A
+B --> A : Подтверждение
+
+newpage
+A -> B : Запрос на оплату заявки
+activate B
+A <-- B : Редирект на страницу платежной системы
+deactivate B
+activate A
+A <- A : Оплата
+A --> B : Подтверждение
+deactivate A
+A <-- B : Подтверждение
+newpage
+A -> B : Запрос на отказ от заявки
+activate B
+A <-- B : Подтверждение
+deactivate B
+@enduml
+
+@startuml
+hide unlinked
+'Оператор КЦ'
+actor "Оператор КЦ" as A
+database "Операторы" as D
+participant Система as B
+
+A -> B : Подтверждение заявки
+activate B
+A <-- B : Подтверждение
+deactivate B
+activate A
+A -> D : Запрос списка операторов
+A <-- D : Ответ
+A -> B : Назначение операторов
+deactivate A
+@enduml
+
+@startuml
+hide unlinked
+'Оператор КЦ'
+actor "Оператор КЦ" as A
+participant Система as B
+A -> B : Проверка и подтверждение заявки
+A <-- B : Ответ
+@enduml
+
+@startuml
+'Оператор ТО'
+actor "Оператор ТО" as A
+participant Система as B
+A <-- B : Выдача списка заявок
+A -> B : Выбор заявки
+
+A <-- B : Выдача формы данных заявки
+activate A
+A -> B : Внесение данных по заявке
+deactivate A
+A <-- B : Подтверждение
+@enduml
+@startuml
+'Оператор ТО'
+actor "Оператор ТО" as A
+participant Система as B
+actor "Оператор ОБ" as C
+A <-- B : Выдача списка заявок
+A -> B : Выбор заявки
+A <-- B : Выдача формы данных заявки
+A -> B : Подтверждение выполнения заявки
+A <-- B : Подтверждение
+B --> C : Уведомление
+
+@enduml
+
+@startuml
+'Оператор ОБ'
+actor "Оператор ОБ" as A
+actor "Оператор ОБ" as A
+participant Система as B
+A <-- B : Выдача списка заявок
+A -> B : Выбор заявки
+
+A <-- B : Выдача формы данных заявки
+activate A
+A -> B : Внесение данных по заявке
+deactivate A
+A <-- B : Подтверждение
+@enduml
+
+@startuml
+'Оператор ОБ'
+actor "Оператор ОБ" as A
+participant Система as B
+actor "Оператор КЦ" as C
+A <-- B : Выдача списка заявок
+A -> B : Выбор заявки
+A <-- B : Выдача формы данных заявки
+A -> B : Подтверждение выполнения заявки
+A <-- B : Подтверждение
+B --> C : Уведомление
+@enduml
