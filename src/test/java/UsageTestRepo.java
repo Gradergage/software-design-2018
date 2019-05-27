@@ -52,5 +52,12 @@ public class UsageTestRepo {
                 .getOrderById(0)
                 .getOperatorsTC()
                 .add(operatorCC.getUsers().getUserById(1));
+        repo.getOrders().showOrder(operatorCC.getOrders()
+                .getOrderById(0));
+    }
+
+    @Test
+    public void addingInformationByTC() {
+
     }
 }
