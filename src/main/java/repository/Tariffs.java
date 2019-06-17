@@ -1,57 +1,46 @@
 package repository;
 
+
 import model.Tariff;
+import org.hibernate.Session;
+import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Tariffs {
 
-    private static Tariffs instance;
-    private List<Tariff> tariffs;
+    private static ArrayList<Tariff> tariffs = new ArrayList<>();
 
-    private Tariffs() {
-        tariffs = new ArrayList<>();
-
-        int id=0;
-        Tariff t1= new Tariff();
-        t1.setId(id++);
-        t1.setName("Халява 1");
-        t1.setPrice(228);
-
-        Tariff t2= new Tariff();
-        t2.setId(id++);
-        t2.setName("Ультимативная Халява 2000");
-        t2.setPrice(13);
-
-        Tariff t3= new Tariff();
-        t3.setId(id++);
-        t3.setName("Вообще не халява");
-        t3.setPrice(124124);
-
-        Tariff t4= new Tariff();
-        t4.setId(id++);
-        t4.setName("Для не-мамонтов");
-        t4.setPrice(999999);
-
-        tariffs.add(t1);
-        tariffs.add(t2);
-        tariffs.add(t3);
-        tariffs.add(t4);
+    public static ArrayList<Tariff> get() {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<Tariff> resTemp = session.createQuery("from Tariff", Tariff.class).list();
+        session.getTransaction().commit();
+        session.close();
+        tariffs.addAll(resTemp);
+        return tariffs;
     }
 
-    public static synchronized Tariffs getInstance() {
-        if (instance == null)
-            instance = new Tariffs();
-        return instance;
+    public static void add(Tariff tariff) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(tariff);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    public Tariff getTariffById(long id) {
-        for (Tariff n : tariffs) {
-            if (n.getId() == id)
-                return n;
-        }
-        return null;
+    public static void remove(Tariff tariff) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(tariff);
+        session.getTransaction().commit();
+        session.close();
     }
 
+/*    public Tariff searchTariff(Tariff tariff) {
+        return tariffs.stream().filter(x -> x.getName().equals(tariff.getName()))
+                .min(Comparator.comparing(Tariff::getId))
+                .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
+    }*/
 }

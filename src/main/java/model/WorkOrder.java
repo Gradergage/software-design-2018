@@ -1,13 +1,30 @@
 package model;
 
+import javax.jws.WebParam;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity(name = "WorkOrder")
+@Table(name = "work_orders")
 public class WorkOrder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "work_orders_generator")
+    @SequenceGenerator(name="work_orders_generator", sequenceName = "work_orders_id_seq", allocationSize = 1)
+    @Column(name = "work_order_id")
     private long id;
-    private int status = 0;
-    private List<String> dataWC = new ArrayList<>();
-    private List<User> operatorsWC = new ArrayList<>();
+
+    @Column(name = "status")
+    private int status = ModelTypes.ORDER_STATUS_IDLE;
+
+    @Column(name = "data_wc")
+    private String dataWC = "";
+
+    @ManyToOne
+    @JoinColumn(name="operator_wc_id")
+    private User operatorWC;
+
+    @ManyToOne
+    @JoinColumn(name="report_id")
     private ReportWC reportWC;
 
     public long getId() {
@@ -26,11 +43,11 @@ public class WorkOrder {
         this.status = status;
     }
 
-    public List<String> getDataWC() {
+    public String getDataWC() {
         return dataWC;
     }
 
-    public void setDataWC(List<String> dataWC) {
+    public void setDataWC(String dataWC) {
         this.dataWC = dataWC;
     }
 
@@ -42,11 +59,11 @@ public class WorkOrder {
         this.reportWC = reportWC;
     }
 
-    public List<User> getOperatorsWC() {
-        return operatorsWC;
+    public User getOperatorWC() {
+        return operatorWC;
     }
 
-    public void setOperatorsWC(List<User> operatorsWC) {
-        this.operatorsWC = operatorsWC;
+    public void setOperatorWC(User operatorWC) {
+        this.operatorWC = operatorWC;
     }
 }

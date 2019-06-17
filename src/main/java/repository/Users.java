@@ -1,85 +1,65 @@
 package repository;
 
-import model.ModelTypes;
 import model.User;
+import org.hibernate.Session;
+import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Users {
-    private static Users instance;
-    private List<User> users;
 
-    private Users() {
-        users = new ArrayList<>();
-        int id = 0;
-        User cc = new User();
-        cc.setId(id++);
-        cc.setName("Митрополит Патриах Cyrillic");
-        cc.setType(ModelTypes.TYPE_USER_OPERATOR_CC);
-        cc.setLogin("cc");
-        cc.setPassword("cc");
-        users.add(cc);
+    private static ArrayList<User> users = new ArrayList<>();
 
-        User tc = new User();
-        tc.setId(id++);
-        tc.setName("Казантип Ибица Отдыхаем");
-        tc.setType(ModelTypes.TYPE_USER_OPERATOR_TC);
-        tc.setLogin("tc");
-        tc.setPassword("tc");
-        users.add(tc);
-
-        User tc2 = new User();
-        tc2.setId(id++);
-        tc2.setName("Ghbdtn Ghbdtn Ghbdtn");
-        tc2.setType(ModelTypes.TYPE_USER_OPERATOR_TC);
-        tc2.setLogin("tc2");
-        tc2.setPassword("tc2");
-        users.add(tc2);
-
-        User wc = new User();
-        wc.setId(id++);
-        wc.setName("Сова Полярная Смешная");
-        wc.setType(ModelTypes.TYPE_USER_OPERATOR_WC);
-        wc.setLogin("wc");
-        wc.setPassword("wc");
-        users.add(wc);
-
-        User wc2 = new User();
-        wc2.setId(id++);
-        wc2.setName("Римский Жребий Брошен");
-        wc2.setType(ModelTypes.TYPE_USER_OPERATOR_WC);
-        wc2.setLogin("wc2");
-        wc2.setPassword("wc2");
-        users.add(wc2);
-
-        User cus = new User();
-        cus.setId(id++);
-        cus.setName("Конь Педальный Трехступенчатый");
-        cus.setType(ModelTypes.TYPE_USER_CUSTOMER);
-        cus.setLogin("cus");
-        cus.setPassword("cus");
-        users.add(cus);
-        System.out.println("Users list:");
-        for(User n : users)
-        {
-            System.out.println(String.format("%5d %s",n.getId(),n.getLogin()));
-        }
+    public static ArrayList<User> get() {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<User> resTemp = session.createQuery("from User", User.class).list();
+        session.getTransaction().commit();
+        session.close();
+        users.addAll(resTemp);
+        return users;
     }
 
-    public static synchronized Users getInstance() {
-        if (instance == null)
-            instance = new Users();
-        return instance;
+    public static User getByLogin(String login) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        User resTemp = session.createQuery("from User as user where user.login like '"+login+"'", User.class).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return resTemp;
     }
 
-    public User getUserById(long id) {
-        for (User n : users) {
-            if (n.getId() == id)
-                return n;
-        }
-        return null;
+    public static ArrayList<User> getByType(int type) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<User> resTemp = session.createQuery("from User as user where user.type like '"+type+"'", User.class).list();
+        session.getTransaction().commit();
+        session.close();
+        ArrayList<User> res = new ArrayList<>();
+        res.addAll(resTemp);
+        return res;
     }
 
+    public static void add(User user) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(user);
+        session.getTransaction().commit();
+        session.close();
+    }
 
+    public static void remove(User user) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(user);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+/*    public Tariff searchTariff(Tariff tariff) {
+        return users.stream().filter(x -> x.getName().equals(tariff.getName()))
+                .min(Comparator.comparing(Tariff::getId))
+                .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
+    }*/
 }

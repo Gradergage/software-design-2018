@@ -1,52 +1,46 @@
 package repository;
 
+import model.Address;
 import model.ReportWC;
+import org.hibernate.Session;
+import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReportsWC {
-    private static ReportsWC instance;
-    private List<ReportWC> reports;
 
-    private ReportsWC() {
-        reports = new ArrayList<>();
+    private static ArrayList<ReportWC> reportsWc = new ArrayList<>();
+
+    public static ArrayList<ReportWC> get() {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<ReportWC> resTemp = session.createQuery("from ReportWC", ReportWC.class).list();
+        session.getTransaction().commit();
+        session.close();
+        reportsWc.addAll(resTemp);
+        return reportsWc;
     }
 
-    public static synchronized ReportsWC getInstance() {
-        if (instance == null)
-            instance = new ReportsWC();
-        return instance;
+    public static void add(ReportWC reportWC) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(reportWC);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    public ReportWC getReportById(long id) {
-        for (ReportWC n : reports) {
-            if (n.getId() == id)
-                return n;
-        }
-        return null;
+    public static void remove(ReportWC reportWC) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(reportWC);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    public boolean addReport(ReportWC report) {
-        if (report != null) {
-            report.setId(reports.size());
-            reports.add(report);
-            return true;
-        } else
-            return false;
-    }
-
-    public boolean updateReport(long id, ReportWC newReport) {
-        ReportWC current = getReportById(id);
-        if (current != null) {
-            current = newReport;
-            current.setId(id);
-            return true;
-        } else return false;
-
-    }
-
-    private boolean seekReport(long id) {
-        return getReportById(id) != null;
-    }
+ /*   public Order searchTariff(Order tariff) {
+        return reportsWc.stream().filter(x -> x.getName().equals(tariff.getName()))
+                .min(Comparator.comparing(Order::getId))
+                .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
+    }*/
 }

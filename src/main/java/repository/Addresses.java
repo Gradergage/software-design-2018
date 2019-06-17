@@ -1,46 +1,45 @@
 package repository;
 
-
-import model.WorkOrder;
+import model.Address;
 import org.hibernate.Session;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkOrders {
+public class Addresses {
 
-    private static ArrayList<WorkOrder> workOrders = new ArrayList<>();
+    private static ArrayList<Address> addresses = new ArrayList<>();
 
-    public static ArrayList<WorkOrder> get() {
+    public static ArrayList<Address> get() {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        List<WorkOrder> resTemp = session.createQuery("from WorkOrder", WorkOrder.class).list();
+        List<Address> resTemp = session.createQuery("from Address", Address.class).list();
         session.getTransaction().commit();
         session.close();
-        workOrders.addAll(resTemp);
-        return workOrders;
+        addresses.addAll(resTemp);
+        return addresses;
     }
 
-    public static void add(WorkOrder workOrder) {
+    public static void add(Address address) {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(workOrder);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static void remove(WorkOrder workOrder) {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.remove(workOrder);
+        session.save(address);
         session.getTransaction().commit();
         session.close();
     }
 
-/*    public Tariff searchTariff(Tariff tariff) {
-        return workOrders.stream().filter(x -> x.getName().equals(tariff.getName()))
-                .min(Comparator.comparing(Tariff::getId))
+    public static void remove(Address order) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(order);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+ /*   public Order searchTariff(Order tariff) {
+        return addresses.stream().filter(x -> x.getName().equals(tariff.getName()))
+                .min(Comparator.comparing(Order::getId))
                 .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
     }*/
 }

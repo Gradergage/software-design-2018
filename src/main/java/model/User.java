@@ -1,15 +1,29 @@
 package model;
 
-public class User {
-    private long id;
-    private String name;
-  /*  private String middleName;
-    private String surname;*/
+import javax.persistence.*;
+import java.util.List;
 
+@Entity(name = "User")
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
+    @SequenceGenerator(name="users_generator", sequenceName = "users_id_seq", allocationSize = 1)
+    @Column(name = "user_id")
+    private long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "type")
     private int type;
 
+    @Column(name = "login", unique = true)
     private String login;
+
+    @Column(name = "password")
     private String password;
+
     public long getId() {
         return id;
     }
@@ -25,22 +39,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
-  /*  public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }*/
 
     public int getType() {
         return type;
