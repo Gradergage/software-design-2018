@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CustomerOrdersController">
+    <children>
+        <TableView fx:id="tableView" layoutX="23.0" layoutY="71.0" prefHeight="306.0" prefWidth="554.0">
+            <columns>
+                <TableColumn fx:id="idCol" prefWidth="53.0" text="ID" />
+                <TableColumn fx:id="addressCol" prefWidth="164.0" text="Address" />
+                <TableColumn fx:id="tariffCol" prefWidth="180.0" text="Tariff" />
+                <TableColumn fx:id="statusCol" prefWidth="156.0" text="Status" />
+            </columns>
+        </TableView>
+        <Label fx:id="userName" layoutX="23.0" layoutY="27.0" prefHeight="17.0" prefWidth="288.0" text="UserName" />
+        <Button fx:id="createOrder" layoutX="423.0" layoutY="23.0" mnemonicParsing="false" onAction="#createOrder" text="Create order" />
+        <Button fx:id="logoutButton" layoutX="523.0" layoutY="23.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+    </children>
+</AnchorPane>

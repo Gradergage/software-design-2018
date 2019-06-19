@@ -50,7 +50,13 @@ public class PaymentDocument {
     public String getData() {
         return data;
     }
-
+    public String getResult() {
+        long sum = workCost+deviceCost;
+        String result=data + "\nDevice cost: "+deviceCost+
+                "\nWork cost: "+workCost+
+                "\nSummary: "+sum;
+        return result;
+    }
     public void setData(String data) {
         this.data = data;
     }

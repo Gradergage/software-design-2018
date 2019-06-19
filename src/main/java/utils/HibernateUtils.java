@@ -32,7 +32,7 @@ public class HibernateUtils {
                 .addAnnotatedClass(WorkOrder.class);
     }
 
-    private static void setUp() throws Exception {
+    public static void setUp() throws Exception {
 
         final StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder()
                 .loadProperties("/hibernate.properties")

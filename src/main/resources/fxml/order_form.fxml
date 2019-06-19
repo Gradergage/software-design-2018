@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0"
+            prefWidth="699.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gui.OrderEditController">
+    <children>
+        <Label layoutX="31.0" layoutY="33.0" text="Order ID:"/>
+        <Label layoutX="31.0" layoutY="58.0" text="Customer:"/>
+        <Label layoutX="31.0" layoutY="83.0" text="CC operator:"/>
+        <Label fx:id="labelID" layoutX="114.0" layoutY="33.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+        <Label fx:id="labelCustomer" layoutX="114.0" layoutY="58.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+        <Label fx:id="labelCC" layoutX="114.0" layoutY="83.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+        <Label layoutX="31.0" layoutY="121.0" text="Address:"/>
+        <Label layoutX="31.0" layoutY="144.0" text="Tariff:"/>
+        <Label fx:id="labelAddress" layoutX="114.0" layoutY="121.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+        <Label fx:id="labelTariff" layoutX="114.0" layoutY="144.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+        <Label layoutX="632.0" layoutY="33.0" text="Status:"/>
+        <Label fx:id="labelStatus" alignment="CENTER_RIGHT" layoutX="493.0" layoutY="50.0" prefHeight="17.0"
+               prefWidth="175.0" text="status" textAlignment="RIGHT"/>
+        <AnchorPane fx:id="paneTC" layoutX="31.0" layoutY="180.0" prefHeight="114.0" prefWidth="636.0">
+            <children>
+                <Label fx:id="labelTC" layoutX="84.0" layoutY="15.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+                <Label layoutY="15.0" text="TC operator:"/>
+                <Label layoutY="38.0" text="Data:"/>
+                <TextArea fx:id="textAreaTC" layoutX="84.0" layoutY="47.0" prefHeight="56.0" prefWidth="553.0"/>
+                <Separator prefHeight="0.0" prefWidth="636.0"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="paneDoc" layoutX="31.0" layoutY="294.0" prefHeight="98.0" prefWidth="637.0">
+            <children>
+                <Label fx:id="labelDocID" layoutX="119.0" layoutY="6.0" prefHeight="17.0" prefWidth="221.0"
+                       text="None"/>
+                <Label layoutY="6.0" text="Payment Document:"/>
+                <Label layoutY="30.0" text="Data:"/>
+                <TextArea fx:id="textAreaDoc" layoutX="84.0" layoutY="30.0" prefHeight="56.0" prefWidth="553.0"/>
+                <Separator prefHeight="0.0" prefWidth="636.0"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="paneWC" layoutX="31.0" layoutY="392.0" prefHeight="98.0" prefWidth="637.0">
+            <children>
+                <Label fx:id="labelWC" layoutX="84.0" layoutY="15.0" prefHeight="17.0" prefWidth="221.0" text="None"/>
+                <Label layoutY="15.0" text="WC operator:"/>
+                <Label layoutY="38.0" text="Data:"/>
+                <TextArea fx:id="textAreaWC" layoutX="84.0" layoutY="47.0" prefHeight="39.0" prefWidth="553.0"/>
+                <Separator prefHeight="0.0" prefWidth="636.0"/>
+            </children>
+        </AnchorPane>
+        <Button fx:id="closeOrder" layoutX="30.0" layoutY="528.0" mnemonicParsing="false" onAction="#closeOrder"
+                text="Close order"/>
+        <Button fx:id="editOrder" layoutX="599.0" layoutY="528.0" mnemonicParsing="false" onAction="#editOrder"
+                text="Edit order"/>
+        <Button fx:id="addReport" layoutX="507.0" layoutY="528.0" mnemonicParsing="false" onAction="#addReport"
+                text="Add report"/>
+        <Button fx:id="rejectOrder" layoutX="121.0" layoutY="528.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="96.0" text="Reject order" onAction="#rejectOrder"/>
+    </children>
+</AnchorPane>

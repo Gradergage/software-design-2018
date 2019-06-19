@@ -2,13 +2,13 @@ package users;
 
 import model.*;
 import org.hibernate.Session;
-import repository.Orders;
+import storage.Orders;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Customer {
+public class Customer implements MarkedUser {
 
     private User user;
     private ArrayList<Order> myOrders = new ArrayList<>();
@@ -18,12 +18,13 @@ public class Customer {
 
     }
 
-    public void getOrders() {
+    public ArrayList<Order> getOrders() {
+        myOrders.clear();
         myOrders.addAll(Orders.get()
                 .stream()
                 .filter(x -> x.getCustomer().getId() == user.getId())
                 .collect(Collectors.toList()));
-
+        return myOrders;
     }
 
     public long createOrder(Address address, Tariff tariff) {

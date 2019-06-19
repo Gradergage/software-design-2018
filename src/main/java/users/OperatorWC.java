@@ -1,18 +1,14 @@
 package users;
 
-import model.ModelTypes;
-import model.Order;
-import model.ReportWC;
-import model.User;
+import model.*;
 import org.hibernate.Session;
-import repository.Orders;
-import repository.ReportsWC;
+import storage.Orders;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class OperatorWC {
+public class OperatorWC implements MarkedUser{
 
     private User user;
     private ArrayList<Order> myOrders = new ArrayList<>();
@@ -21,18 +17,27 @@ public class OperatorWC {
 
     }
 
-    public void getOrders()
+    public ArrayList<Order> getOrders()
     {
+        myOrders.clear();
         myOrders.addAll(Orders.get()
                 .stream()
-                .filter(x -> x.getWorkOrder().getOperatorWC().getId()==user.getId())
+                .filter(x -> {
+                    if(x.getWorkOrder()!=null) {
+                            return x.getWorkOrder().getOperatorWC().getId() == user.getId();
+                    }
+                    return false;
+                })
                 .collect(Collectors.toList()));
+        return myOrders;
     }
 
     public void addData(Order order, String data) {
-        order.getWorkOrder().setDataWC(data);
+        WorkOrder wo = order.getWorkOrder();
+        wo.setDataWC(data);
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
+        session.update(wo);
         session.update(order);
         session.getTransaction().commit();
         session.close();
@@ -40,11 +45,13 @@ public class OperatorWC {
 
     public void addReport(Order order, ReportWC report)
     {
-        order.getWorkOrder().setReportWC(report);
-        order.getWorkOrder().setStatus(ModelTypes.ORDER_STATUS_WAITING);
+        WorkOrder wo = order.getWorkOrder();
+        wo.setReportWC(report);
+        wo.setStatus(ModelTypes.ORDER_STATUS_WAITING);
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
         session.persist(report);
+        session.update(wo);
         session.update(order);
         session.getTransaction().commit();
         session.close();

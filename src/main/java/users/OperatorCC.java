@@ -2,14 +2,13 @@ package users;
 
 import model.*;
 import org.hibernate.Session;
-import repository.Orders;
-import repository.Users;
+import storage.Orders;
+import storage.Users;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class OperatorCC {
+public class OperatorCC implements MarkedUser{
 
     private User user;
     private ArrayList<Order> myOrders = new ArrayList<>();
@@ -17,9 +16,11 @@ public class OperatorCC {
     public OperatorCC(User user) {
         this.user = user;
     }
-    public void getOrders()
+    public ArrayList<Order> getOrders()
     {
+        myOrders.clear();
         myOrders.addAll(Orders.get());
+        return myOrders;
     }
 
     public void acceptOrder(Order order, User tcOp)
@@ -64,11 +65,18 @@ public class OperatorCC {
 
     public void closeOrder(Order order)
     {
-        order.getWorkOrder().setStatus(ModelTypes.ORDER_STATUS_COMPLETED);
+        WorkOrder wo = order.getWorkOrder();
+        wo.setStatus(ModelTypes.ORDER_STATUS_COMPLETED);
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
+        session.update(wo);
         session.update(order);
         session.getTransaction().commit();
         session.close();
+    }
+
+    @Override
+    public User getUser() {
+        return user;
     }
 }

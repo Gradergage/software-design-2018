@@ -1,4 +1,4 @@
-package repository;
+package storage;
 
 import model.User;
 import org.hibernate.Session;
@@ -6,6 +6,7 @@ import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Users {
 
@@ -17,6 +18,7 @@ public class Users {
         List<User> resTemp = session.createQuery("from User", User.class).list();
         session.getTransaction().commit();
         session.close();
+        users.clear();
         users.addAll(resTemp);
         return users;
     }
@@ -57,6 +59,17 @@ public class Users {
         session.close();
     }
 
+    public static ArrayList<User> getUsersByRole(int role)
+    {
+        ArrayList<User> res=new ArrayList<>();
+
+        res.clear();
+        res.addAll(Users.get()
+                .stream()
+                .filter(x -> x.getType()==role)
+                .collect(Collectors.toList()));
+        return res;
+    }
 /*    public Tariff searchTariff(Tariff tariff) {
         return users.stream().filter(x -> x.getName().equals(tariff.getName()))
                 .min(Comparator.comparing(Tariff::getId))

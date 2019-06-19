@@ -1,46 +1,47 @@
-package repository;
+package storage;
 
-import model.Address;
-import model.ReportWC;
+
+import model.WorkOrder;
 import org.hibernate.Session;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReportsWC {
+public class WorkOrders {
 
-    private static ArrayList<ReportWC> reportsWc = new ArrayList<>();
+    private static ArrayList<WorkOrder> workOrders = new ArrayList<>();
 
-    public static ArrayList<ReportWC> get() {
+    public static ArrayList<WorkOrder> get() {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        List<ReportWC> resTemp = session.createQuery("from ReportWC", ReportWC.class).list();
+        List<WorkOrder> resTemp = session.createQuery("from WorkOrder", WorkOrder.class).list();
         session.getTransaction().commit();
         session.close();
-        reportsWc.addAll(resTemp);
-        return reportsWc;
+        workOrders.clear();
+        workOrders.addAll(resTemp);
+        return workOrders;
     }
 
-    public static void add(ReportWC reportWC) {
+    public static void add(WorkOrder workOrder) {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(reportWC);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    public static void remove(ReportWC reportWC) {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.remove(reportWC);
+        session.save(workOrder);
         session.getTransaction().commit();
         session.close();
     }
 
- /*   public Order searchTariff(Order tariff) {
-        return reportsWc.stream().filter(x -> x.getName().equals(tariff.getName()))
-                .min(Comparator.comparing(Order::getId))
+    public static void remove(WorkOrder workOrder) {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(workOrder);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+/*    public Tariff searchTariff(Tariff tariff) {
+        return workOrders.stream().filter(x -> x.getName().equals(tariff.getName()))
+                .min(Comparator.comparing(Tariff::getId))
                 .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
     }*/
 }

@@ -1,26 +1,24 @@
-package mappers;
+package storage;
 
 import model.Address;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-public class AddressMapper {
+public class TariffsMapper {
     public static final String COLUMNS = "id, address";
     private HashMap<Long, Address> loadedMap;
     private Connection connection;
+    private String allStatement = "SELECT * FROM tariffs";
 
-    public AddressMapper(Connection connection) {
+    public TariffsMapper(Connection connection) {
         this.loadedMap = new HashMap<>();
         this.connection = connection;
     }
 
     private String findStatement() {
-        return "SELECT address_id FROM addresses WHERE address = ?";
+        return "SELECT * FROM tariffs WHERE id = ?";
     }
 
     private String insertStatement() {
@@ -67,6 +65,31 @@ public class AddressMapper {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    }
+
+    public String getTariffsJson() {
+        String result = "{ \"tariffs\": [%s] }";
+        try {
+            PreparedStatement query = connection.prepareStatement(allStatement);
+            ResultSet resultSet = query.executeQuery();
+            String tariffsArray = "";
+            while (resultSet.next()) {
+
+                String tariff = "{\"id\":%s," +
+                        "\"name\":\"%s\"," +
+                        "\"price\":%s}";
+                long id = resultSet.getLong(1);
+                String name = resultSet.getString(2);
+                int price = resultSet.getInt(3);
+                tariffsArray = tariffsArray + String.format(tariff, id, name, price) + ",";
+            }
+            tariffsArray = tariffsArray.substring(0, tariffsArray.length() - 1);
+            result = String.format(result, tariffsArray);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      //  System.out.println(result);
+        return result;
     }
 
     private void doInsert(Address address, PreparedStatement insertStatement) throws SQLException {

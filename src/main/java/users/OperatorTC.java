@@ -4,13 +4,13 @@ import model.ModelTypes;
 import model.Order;
 import model.User;
 import org.hibernate.Session;
-import repository.Orders;
+import storage.Orders;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class OperatorTC {
+public class OperatorTC implements MarkedUser {
 
     private User user;
     private ArrayList<Order> myOrders = new ArrayList<>();
@@ -38,12 +38,13 @@ public class OperatorTC {
         session.close();
     }
 
-    public void getOrders() {
+    public ArrayList<Order> getOrders() {
+        myOrders.clear();
         myOrders.addAll(Orders.get()
                 .stream()
-                .filter(x -> x.getOperatorsTC().getId() == user.getId() && x.getStatus()!=ModelTypes.ORDER_PAYMENT_STATUS_REJECTED)
+                .filter(x -> x.getOperatorsTC().getId() == user.getId() && x.getStatus() != ModelTypes.ORDER_PAYMENT_STATUS_REJECTED)
                 .collect(Collectors.toList()));
-
+        return myOrders;
     }
 
     public User getUser() {

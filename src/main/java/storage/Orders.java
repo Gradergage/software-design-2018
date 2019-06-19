@@ -1,4 +1,4 @@
-package repository;
+package storage;
 
 import model.*;
 import org.hibernate.Session;
@@ -19,6 +19,7 @@ public class Orders {
         List<Order> resTemp = session.createQuery("from Order", Order.class).list();
         session.getTransaction().commit();
         session.close();
+        orders.clear();
         orders.addAll(resTemp);
         return orders;
     }

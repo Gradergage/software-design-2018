@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="504.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CCOrdersController">
+    <children>
+        <TableView fx:id="tableView" layoutX="23.0" layoutY="71.0" prefHeight="410.0" prefWidth="820.0">
+            <columns>
+                <TableColumn fx:id="idCol" prefWidth="53.0" text="ID" />
+                <TableColumn fx:id="customerCol" prefWidth="69.0" text="Customer" />
+                <TableColumn fx:id="addressCol" prefWidth="64.0" text="Address" />
+                <TableColumn fx:id="tariffCol" minWidth="4.0" prefWidth="64.0" text="Tariff" />
+                <TableColumn fx:id="statusCol" prefWidth="92.0" text="Status" />
+                <TableColumn fx:id="tcCol" minWidth="0.0" prefWidth="232.0" text="TC operator" />
+                <TableColumn fx:id="wcCol" prefWidth="238.0" text="WC operator" />
+            </columns>
+        </TableView>
+        <Label fx:id="userName" layoutX="23.0" layoutY="27.0" prefHeight="17.0" prefWidth="288.0" text="UserName" />
+        <Button fx:id="logoutButton" layoutX="789.0" layoutY="32.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+    </children>
+</AnchorPane>

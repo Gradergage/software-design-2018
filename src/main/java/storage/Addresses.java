@@ -1,35 +1,36 @@
-package repository;
+package storage;
 
-import model.PaymentDocument;
+import model.Address;
 import org.hibernate.Session;
 import utils.HibernateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentDocuments {
+public class Addresses {
 
-    private static ArrayList<PaymentDocument> paymentDocuments = new ArrayList<>();
+    private static ArrayList<Address> addresses = new ArrayList<>();
 
-    public static ArrayList<PaymentDocument> get() {
+    public static ArrayList<Address> get() {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        List<PaymentDocument> resTemp = session.createQuery("from PaymentDocument", PaymentDocument.class).list();
+        List<Address> resTemp = session.createQuery("from Address", Address.class).list();
         session.getTransaction().commit();
         session.close();
-        paymentDocuments.addAll(resTemp);
-        return paymentDocuments;
+        addresses.clear();
+        addresses.addAll(resTemp);
+        return addresses;
     }
 
-    public static void add(PaymentDocument paymentDocument) {
+    public static void add(Address address) {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(paymentDocument);
+        session.save(address);
         session.getTransaction().commit();
         session.close();
     }
 
-    public static void remove(PaymentDocument order) {
+    public static void remove(Address order) {
         Session session = HibernateUtils.getSessionFactory().openSession();
         session.beginTransaction();
         session.remove(order);
@@ -38,7 +39,7 @@ public class PaymentDocuments {
     }
 
  /*   public Order searchTariff(Order tariff) {
-        return paymentDocuments.stream().filter(x -> x.getName().equals(tariff.getName()))
+        return addresses.stream().filter(x -> x.getName().equals(tariff.getName()))
                 .min(Comparator.comparing(Order::getId))
                 .orElseThrow(() -> new NoSuchElementException(tariff.getName() + " not present yet"));
     }*/

@@ -1,23 +1,20 @@
-import mappers.AddressMapper;
+import storage.TariffsMapper;
 import model.*;
 import users.*;
 import org.hibernate.Session;
 import org.junit.Test;
-import repository.*;
+import storage.*;
 import utils.*;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DBTests {
     @Test
     public void initTest() throws SQLException {
         DBUtils dbUtils = new DBUtils();
         dbUtils.init();
-        AddressMapper mapper = new AddressMapper(dbUtils.getConnection());
-        System.out.println(mapper.find("Пархоменко 32").getAddress());
-
+        TariffsMapper mapper = new TariffsMapper(dbUtils.getConnection());
+        mapper.getTariffsJson();
     }
 
     @Test
@@ -101,7 +98,7 @@ public class DBTests {
 
 
         System.out.println("==КЦ оператор добавляет оператора ТО==");
-        cc.acceptOrder(Orders.searchById(id), Users.getByLogin("tc1"));
+        cc.acceptOrder(Orders.searchById(id), Users.getByLogin("tc2"));
         assert (Orders.searchById(id).getStatus() == ModelTypes.ORDER_STATUS_ACTIVE);
 
         System.out.println("==ТО оператор добавляет свою информацию и закрывает заявку==");
@@ -130,7 +127,7 @@ public class DBTests {
 
         System.out.println("==КЦ оператор оформляет заявку на работы==");
 
-        cc.createWorkOrder(Orders.searchById(id),Users.getByLogin("wc1"));
+        cc.createWorkOrder(Orders.searchById(id),Users.getByLogin("wc2"));
 
         System.out.println("==МО оператор заполняет информацию в заявке ==");
 
@@ -148,7 +145,6 @@ public class DBTests {
         assert (Orders.searchById(id).getWorkOrder().getStatus() == ModelTypes.ORDER_STATUS_COMPLETED);
         assert (Orders.searchById(id).getStatus() == ModelTypes.ORDER_STATUS_COMPLETED);
         assert (Orders.searchById(id).getPaymentStatus() == ModelTypes.ORDER_PAYMENT_STATUS_CONFIRMED);
-
 
         Orders.showOrder(Orders.searchById(id));
     }

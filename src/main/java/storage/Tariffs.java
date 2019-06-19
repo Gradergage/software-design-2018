@@ -1,4 +1,4 @@
-package repository;
+package storage;
 
 
 import model.Tariff;
@@ -18,6 +18,7 @@ public class Tariffs {
         List<Tariff> resTemp = session.createQuery("from Tariff", Tariff.class).list();
         session.getTransaction().commit();
         session.close();
+        tariffs.clear();
         tariffs.addAll(resTemp);
         return tariffs;
     }
