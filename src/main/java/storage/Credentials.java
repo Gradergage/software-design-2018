@@ -1,18 +1,25 @@
 package storage;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import netscape.javascript.JSObject;
-
 import java.io.*;
+
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Credentials {
     private static String host;
     private static String password;
     private static String dbName;
     private static Credentials instance;
-    private static int port;
+    private static long port;
     private static String user;
+
     public static String getHost() {
         return host;
     }
@@ -37,11 +44,11 @@ public class Credentials {
         Credentials.dbName = dbName;
     }
 
-    public static int getPort() {
+    public static long getPort() {
         return port;
     }
 
-    public static void setPort(int port) {
+    public static void setPort(long port) {
         Credentials.port = port;
     }
 
@@ -54,22 +61,22 @@ public class Credentials {
     }
 
     public static void init() {
+        System.out.println("INIT STARTED");
         try {
-            InputStream is = new FileInputStream("creds.json");
-
-            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
-            String line = buf.readLine();
-            /*StringBuilder sb = new StringBuilder();
-            while (line != null) {
-                sb.append(line).append("\n");
-                line = buf.readLine();
-            }
-            String fileAsString = sb.toString();
-            Gson gson = new Gson();
-            instance = gson.fromJson(fileAsString,Credentials.class);*/
+            FileReader reader = new FileReader("creds.json");
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(reader);
+            setHost((String) obj.get("host"));
+            setPort((Long)obj.get("port"));
+            setUser((String) obj.get("user"));
+            setDbName((String) obj.get("dbName"));
+            setPassword((String) obj.get("password"));
+            System.out.println(obj.toJSONString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

@@ -11,7 +11,7 @@ public class DBUtils {
             Credentials.init();
             Class.forName("org.postgresql.Driver");
             String host = Credentials.getHost();
-            int port = Credentials.getPort();
+            long port = Credentials.getPort();
             String user = Credentials.getUser();
             String password = Credentials.getPassword();
             String dbname = Credentials.getDbName();
